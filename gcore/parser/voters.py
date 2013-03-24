@@ -2,7 +2,7 @@
 
 import xml.etree.ElementTree as et
 import glob
-
+from Voter import Voter
 
 def get_points(data):
     points_data = {}
@@ -44,7 +44,6 @@ def get_voter_data(filename):
         elif item.tag == "points":
             points_data = get_points(item)
             data["points"] = points_data
-    print data
     return data
 
 
@@ -63,7 +62,6 @@ def get_voters_directory(main_directory=None, voters_directory=None):
 
 def get_all_voters_data(voters_directory):
     voter_files = glob.glob(voters_directory + "/*.xml")
-    print voter_files
     all_voter_data = []
     number = 0
     for voter in voter_files:
@@ -75,15 +73,35 @@ def get_all_voters_data(voters_directory):
     return all_voter_data
 
 
-def read_voters(main_directory=None, voters_directory=None):
+def read_voters_data(main_directory=None, voters_directory=None):
     voter_location = get_voters_directory(main_directory, voters_directory)
     voters_data = get_all_voters_data(voter_location)
     return voters_data
 
+def read_voters(voters_data):
+    """From the voters data, return a list of 'Voters'"""
+    
+    all_voters = {}
+    for voter in voters_data:
+        # Get the attributes
+        name = voter["name"]
+        image = voter["image"]
+        points = voter["points"]
+        _id = voter["id"]
+        
+        # Make a new 'Song'
+        v = Voter(name, image, points, _id)
+        all_voters[_id] = v
+    return all_voters       
+
+
 
 def main():
     #filename = "data/voters/voter1.xml"
-    read_voters()
+    voters_data = read_voters_data()
+    all_voters = read_voters(voters_data)
+    for i in range(len(all_voters)):
+        print all_voters[i]
 
 if __name__ == '__main__':
     main()

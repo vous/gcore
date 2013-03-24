@@ -2,28 +2,7 @@
 
 import xml.etree.ElementTree as et
 import glob
-
-class Song:
-    def __init__(self, name="", artist="", image="", points=0, _id=0):
-        self.name = name
-        self.artist = artist
-        self.points = points
-        self.image = image
-        self._id = _id
-    
-    def __str__(self):
-        return "\"%s\" by %s has %d points" % (self.name, self.artist, self.points)
-        
-    def add_points(self, value):
-        """Adds a certain amount of points to a song"""
-        self.points = self.points + value
-    
-    def subtract_points(self, value):
-        """Subtracts a certain amount of points from a song"""
-        self.points = self.points - value
-        if self.points < 0:
-            # Value cannot be less than 0!
-            self.points = 0
+from Song import Song
 
 def get_song_data(filename):
     """Given a location, return the song data"""
@@ -92,7 +71,9 @@ def read_songs(songs_data):
 
 def main():
     songs_data = read_songs_data()
-    read_songs(songs_data)
+    all_songs = read_songs(songs_data)
+    for i in range(len(all_songs)):
+        print all_songs[i]
     
 
 if __name__ == '__main__':
