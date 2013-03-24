@@ -3,6 +3,27 @@
 import xml.etree.ElementTree as et
 import glob
 
+class Song:
+    def __init__(self, name="", artist="", image="", points=0, _id=0):
+        self.name = name
+        self.artist = artist
+        self.points = points
+        self.image = image
+        self._id = _id
+    
+    def __str__(self):
+        return "\"%s\" by %s has %d points" % (self.name, self.artist, self.points)
+        
+    def add_points(self, value):
+        """Adds a certain amount of points to a song"""
+        self.points = self.points + value
+    
+    def subtract_points(self, value):
+        """Subtracts a certain amount of points from a song"""
+        self.points = self.points - value
+        if self.points < 0:
+            # Value cannot be less than 0!
+            self.points = 0
 
 def get_song_data(filename):
     """Given a location, return the song data"""
@@ -46,14 +67,33 @@ def get_all_songs_data(songs_directory):
     return all_song_data
 
 
-def read_songs(main_directory=None, songs_directory=None):
+def read_songs_data(main_directory=None, songs_directory=None):
     songs_location = get_songs_directory(main_directory, songs_directory)
     songs_data = get_all_songs_data(songs_location)
     return songs_data
+    
+def read_songs(songs_data):
+    """From the songs data, return a list of 'Songs'"""
+    
+    all_songs = {}
+    for song in songs_data:
+        # Get the attributes
+        name = song["name"]
+        artist = song["artist"]
+        image = song["image"]
+        _id = song["id"]
+        points = 0 # Each song starts with 0 points
+        
+        # Make a new 'Song'
+        s = Song(name, artist, image, points, _id)
+        all_songs[_id] = s
+    return all_songs       
 
 
 def main():
-    print(read_songs())
+    songs_data = read_songs_data()
+    read_songs(songs_data)
+    
 
 if __name__ == '__main__':
     main()
