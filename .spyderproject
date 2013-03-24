@@ -5,11 +5,13 @@ p2
 sS'relative_pythonpath'
 p4
 (lp5
-sS'name'
-p6
 Vgcore
+p6
+asS'name'
 p7
-sS'opened'
+Vgcore
 p8
+sS'opened'
+p9
 I01
 s.
